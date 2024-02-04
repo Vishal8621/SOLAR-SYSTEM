@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solar System</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body bgcolor="black">
+  <canvas id="solarSystemCanvas" style="left: 50%;"></canvas>
+  <script>
+    const canvas = document.getElementById('solarSystemCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const sun = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      radius: 50,
+      color: 'yellow'
+    };
+
+    const earth = {
+      orbitRadius: 150,
+      angle: 0,
+      radius: 20,
+      color: 'blue'
+    };
+
+    const moon = {
+      orbitRadius: 40 ,
+      
+      angle: 0,
+      radius: 10,
+      color: 'silver'
+      
+    };
+
+    function draw() {
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw Earth's Orbit Path
+      ctx.beginPath();
+      ctx.arc(sun.x, sun.y, earth.orbitRadius, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(192, 192, 192, 0.5)';
+      ctx.stroke();
+      ctx.closePath();
+
+      // Draw Sun
+      ctx.beginPath();
+      ctx.arc(sun.x, sun.y, sun.radius, 0, Math.PI * 2);
+      ctx.fillStyle = sun.color;
+      ctx.fill();
+      ctx.closePath();
+
+      // Update and Draw Earth
+      earth.x = sun.x + earth.orbitRadius * Math.cos(earth.angle);
+      earth.y = sun.y + earth.orbitRadius * Math.sin(earth.angle);
+
+      ctx.beginPath();
+      ctx.arc(earth.x, earth.y, earth.radius, 0, Math.PI * 2);
+      ctx.fillStyle = earth.color;
+      ctx.fill();
+      ctx.closePath();
+
+      // Draw Moon's Orbit Path
+      ctx.beginPath();
+      ctx.arc(earth.x, earth.y, moon.orbitRadius, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(192, 192, 192, 0.5)';
+      ctx.stroke();
+      ctx.closePath();
+
+      // Update and Draw Moon
+      moon.x = earth.x + moon.orbitRadius * Math.cos(moon.angle);
+      moon.y = earth.y + moon.orbitRadius * Math.sin(moon.angle);
+
+      ctx.beginPath();
+      ctx.arc(moon.x, moon.y, moon.radius, 0, Math.PI * 2);
+      ctx.fillStyle = moon.color;
+      ctx.fill();
+      ctx.closePath();
+
+      // Update angles for next frame
+      earth.angle += 0.01;
+      moon.angle += 0.05;
+
+      // Request animation frame
+      requestAnimationFrame(draw);
+    }
+
+    // Start animation
+    draw();
+  </script>
+</body>
+</html>
